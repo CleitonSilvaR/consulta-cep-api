@@ -45,12 +45,17 @@ public class EnderecoController {
 	}
 	
 	private ResponseEntity consultarEnderecoPorCep(String cep) {
-		Endereco endereco = enderecoService.consultarEndereco(cep);
-		
-		if (endereco != null) {
-			return new ResponseEntity(endereco, HttpStatus.OK);
-		} else {
-			return new ResponseEntity(new Endereco("CEP inválido"), HttpStatus.BAD_REQUEST);
+		try {
+			Endereco endereco = enderecoService.consultarEndereco(cep);
+			
+			if (endereco != null) {
+				return new ResponseEntity(endereco, HttpStatus.OK);
+			} else {
+				return new ResponseEntity(new Endereco("CEP inválido"), HttpStatus.BAD_REQUEST);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity(new Endereco("Oppps, ocorreu um erro inesperado."), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 }

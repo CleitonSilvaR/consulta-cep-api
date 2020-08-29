@@ -9,5 +9,4 @@ public class ConsultaCepApiApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ConsultaCepApiApplication.class, args);
 	}
-
 }
