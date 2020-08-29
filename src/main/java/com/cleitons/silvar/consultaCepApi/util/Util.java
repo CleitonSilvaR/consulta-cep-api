@@ -28,27 +28,27 @@ public final class Util {
 				.collect(Collectors.toList());
 		
 		StringBuilder retorno = new StringBuilder(valor);
-		for (int i=SistemaConstantes.ZERO; i<retorno.length(); i++) {
 			
-			if (retorno.lastIndexOf(caracterSelecionadoString) < SistemaConstantes.ZERO) {
-				retorno.setCharAt(retorno.length() -SistemaConstantes.UM, caracterSelecionado);
-			} else {
-				int posicaoUltimoElemento = -SistemaConstantes.UM;
-				for (String numero : numeros) {
-					int posicaoUltimoElementoAuxiliar = retorno.lastIndexOf(numero);
-					
-					if (posicaoUltimoElementoAuxiliar > posicaoUltimoElemento) {
-						posicaoUltimoElemento = posicaoUltimoElementoAuxiliar;
-					}
+		if (retorno.lastIndexOf(caracterSelecionadoString) < SistemaConstantes.ZERO) {
+			retorno.setCharAt(retorno.length() -SistemaConstantes.UM, caracterSelecionado);
+		} else {
+			int posicaoUltimoElemento = -SistemaConstantes.UM;
+			for (String numero : numeros) {
+				int posicaoUltimoElementoAuxiliar = retorno.lastIndexOf(numero);
+				
+				if (posicaoUltimoElementoAuxiliar > posicaoUltimoElemento) {
+					posicaoUltimoElemento = posicaoUltimoElementoAuxiliar;
 				}
-				if (posicaoUltimoElemento < SistemaConstantes.ZERO) {
-					break;
-				}
+			}
+			if (posicaoUltimoElemento >= SistemaConstantes.ZERO) {
 				retorno.setCharAt(posicaoUltimoElemento, caracterSelecionado);
 			}
 		}
 		
 		return retorno.toString();
 	}
-
+	
+	public static boolean isValorValido(String valor) {
+        return (valor != null && !valor.trim().isEmpty());
+    }
 }

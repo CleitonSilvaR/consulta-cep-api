@@ -1,8 +1,8 @@
 package com.cleitons.silvar.consultaCepApi.service;
 
-import com.cleitons.silvar.consultaCepApi.model.Endereco;
+import com.cleitons.silvar.consultaCepApi.model.entity.Endereco;
 
 public interface EnderecoService {
 	
-	Endereco obterPorCep(String cep);
+	Endereco consultarEndereco(String cep);
 }

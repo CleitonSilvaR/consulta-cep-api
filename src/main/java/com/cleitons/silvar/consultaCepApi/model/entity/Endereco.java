@@ -1,4 +1,4 @@
-package com.cleitons.silvar.consultaCepApi.model;
+package com.cleitons.silvar.consultaCepApi.model.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -7,9 +7,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.cleitons.silvar.consultaCepApi.util.SistemaConstantes;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,6 +26,7 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Endereco {
 
 	@Id
@@ -47,4 +50,11 @@ public class Endereco {
 	
 	@Column(name = "estado", length = SistemaConstantes.DOIS)
 	@Getter @Setter private String estado;
+	
+	@Transient
+	@Getter @Setter private String erro;
+
+	public Endereco(String erro) {
+		this.erro = erro;
+	}
 }

@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.cleitons.silvar.consultaCepApi.model.Endereco;
+import com.cleitons.silvar.consultaCepApi.model.entity.Endereco;
 
 public interface EnderecoRepository extends JpaRepository<Endereco, Long> {
 
