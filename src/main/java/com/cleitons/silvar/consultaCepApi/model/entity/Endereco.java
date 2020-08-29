@@ -57,4 +57,9 @@ public class Endereco {
 	public Endereco(String erro) {
 		this.erro = erro;
 	}
+
+	public Endereco(Long id, String cep) {
+		this.id = id;
+		this.cep = cep;
+	}
 }

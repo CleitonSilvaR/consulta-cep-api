@@ -8,6 +8,6 @@ import com.cleitons.silvar.consultaCepApi.model.entity.Endereco;
 
 public interface EnderecoRepository extends JpaRepository<Endereco, Long> {
 
-	Optional<Endereco> findByCep(String email);
+	Optional<Endereco> findByCep(String cep);
 
 }

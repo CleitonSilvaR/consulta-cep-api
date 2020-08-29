@@ -19,7 +19,6 @@ public final class Util {
         return valueRetorno.toString();
     }
 	
-	
 	public static String substituirUltimoCaractereNumerio(String valor, char caracterSelecionado) {
 		String caracterSelecionadoString = String.valueOf(caracterSelecionado);
 		

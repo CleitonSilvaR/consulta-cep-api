@@ -18,7 +18,7 @@ import com.cleitons.silvar.consultaCepApi.util.Util;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/enderecos")
+@RequestMapping("/endereco")
 @RequiredArgsConstructor
 public class EnderecoController {
 	
