@@ -16,10 +16,12 @@ import com.cleitons.silvar.consultaCepApi.model.entity.Usuario;
 import com.cleitons.silvar.consultaCepApi.service.impl.UsuarioServiceImpl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/usuarios")
 @RequiredArgsConstructor
+@Slf4j
 public class UsuarioController {
 	
 	private final UsuarioServiceImpl usuarioService;
@@ -29,6 +31,7 @@ public class UsuarioController {
 			consumes = { MediaType.APPLICATION_JSON_VALUE })
 	@ResponseStatus(HttpStatus.CREATED)
 	public UsuarioDTO salvar(@RequestBody @Valid Usuario usuario ) {
+		log.info("Salvando usuario login {} {}", usuario.getLogin(), usuario.getSenha());
 		String senhaCriptografada = passwordEncoder.encode(usuario.getSenha());
 		usuario.setSenha(senhaCriptografada);
 		

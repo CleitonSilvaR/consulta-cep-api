@@ -16,10 +16,12 @@ import com.cleitons.silvar.consultaCepApi.service.EnderecoService;
 import com.cleitons.silvar.consultaCepApi.util.Util;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/endereco")
 @RequiredArgsConstructor
+@Slf4j
 public class EnderecoController {
 	
 	private final EnderecoService enderecoService;
@@ -46,6 +48,7 @@ public class EnderecoController {
 	
 	private ResponseEntity consultarEnderecoPorCep(String cep) {
 		try {
+			log.info("Consultando cep {}", cep);
 			Endereco endereco = enderecoService.consultarEndereco(cep);
 			
 			if (endereco != null) {
