@@ -7,13 +7,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @SpringBootApplication
-@EnableWebMvc
-public class ConsultaCepApiApplication implements WebMvcConfigurer {
-
-	@Override
-	public void addCorsMappings(CorsRegistry registry) {
-		registry.addMapping("/**").allowedMethods("GET", "POST");
-	}
+public class ConsultaCepApiApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ConsultaCepApiApplication.class, args);
