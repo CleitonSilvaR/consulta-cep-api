@@ -36,7 +36,7 @@ public class EnderecoController {
 	private final EnderecoService enderecoService;
 	
 	@GetMapping(value = "/{cep}", produces = { MediaType.APPLICATION_JSON_VALUE })
-	@ApiOperation("Cadastro de usuario com permissão para acessar api consulta cep")
+	@ApiOperation("Consulta de endereço via requesição GET")
 	@ApiResponses({
 		@ApiResponse(code = 200, response = Endereco.class, message = "Cep encontrado com sucesso!"),
 		@ApiResponse(code = 400, response = ErrorDTO.class, message = "Cep inválido!"),
@@ -44,7 +44,7 @@ public class EnderecoController {
 	})
 	public ResponseEntity obterEndereco(
 			@PathVariable 
-			@ApiParam("Cep para realizar a consulta")
+			@ApiParam(name = "cep", value = "Cep para realizar a consulta", required = true)
 			String cep) {
 		
 		if (!Util.isValorValido(cep)) {
@@ -56,6 +56,7 @@ public class EnderecoController {
 	
 	@PostMapping( produces = { MediaType.APPLICATION_JSON_VALUE }, 
 			consumes = { MediaType.APPLICATION_JSON_VALUE })
+	@ApiOperation("Consulta de endereço via requesição POST")
 	@ApiResponses({
 		@ApiResponse(code = 200, response = Endereco.class, message = "Cep encontrado com sucesso!"),
 		@ApiResponse(code = 400, response = ErrorDTO.class, message = "Cep inválido!"),
@@ -63,6 +64,7 @@ public class EnderecoController {
 	})
 	public ResponseEntity obterEndereco(
 			@RequestBody 
+			@ApiParam(name = "Endereço", value = "Objeto com valor de cep para consulta", required = true)
 			EnderecoDTO enderecoDTO ) {
 		
 		if (enderecoDTO == null || !Util.isValorValido(enderecoDTO.getCep())) {
