@@ -11,10 +11,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cleitons.silvar.consultaCepApi.model.dto.EnderecoDTO;
+import com.cleitons.silvar.consultaCepApi.model.dto.ErrorDTO;
 import com.cleitons.silvar.consultaCepApi.model.entity.Endereco;
 import com.cleitons.silvar.consultaCepApi.service.EnderecoService;
 import com.cleitons.silvar.consultaCepApi.util.Util;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -22,15 +30,25 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/endereco")
 @RequiredArgsConstructor
 @Slf4j
+@Api("Api Consulta cep")
 public class EnderecoController {
 	
 	private final EnderecoService enderecoService;
 	
 	@GetMapping(value = "/{cep}", produces = { MediaType.APPLICATION_JSON_VALUE })
-	public ResponseEntity obterEndereco(@PathVariable String cep) {
+	@ApiOperation("Cadastro de usuario com permissão para acessar api consulta cep")
+	@ApiResponses({
+		@ApiResponse(code = 200, response = Endereco.class, message = "Cep encontrado com sucesso!"),
+		@ApiResponse(code = 400, response = ErrorDTO.class, message = "Cep inválido!"),
+		@ApiResponse(code = 500, response = ErrorDTO.class, message = "Erro inesperado")
+	})
+	public ResponseEntity obterEndereco(
+			@PathVariable 
+			@ApiParam("Cep para realizar a consulta")
+			String cep) {
 		
 		if (!Util.isValorValido(cep)) {
-			return new ResponseEntity(new Endereco("CEP inválido"), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity(new ErrorDTO("CEP inválido"), HttpStatus.BAD_REQUEST);
 		}
 		
 		return consultarEnderecoPorCep(cep);
@@ -38,10 +56,17 @@ public class EnderecoController {
 	
 	@PostMapping( produces = { MediaType.APPLICATION_JSON_VALUE }, 
 			consumes = { MediaType.APPLICATION_JSON_VALUE })
-	public ResponseEntity obterEndereco(@RequestBody EnderecoDTO enderecoDTO ) {
+	@ApiResponses({
+		@ApiResponse(code = 200, response = Endereco.class, message = "Cep encontrado com sucesso!"),
+		@ApiResponse(code = 400, response = ErrorDTO.class, message = "Cep inválido!"),
+		@ApiResponse(code = 500, response = ErrorDTO.class, message = "Erro inesperado")
+	})
+	public ResponseEntity obterEndereco(
+			@RequestBody 
+			EnderecoDTO enderecoDTO ) {
 		
 		if (enderecoDTO == null || !Util.isValorValido(enderecoDTO.getCep())) {
-			return new ResponseEntity(new Endereco("CEP inválido"), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity(new ErrorDTO("CEP inválido"), HttpStatus.BAD_REQUEST);
 		}
 		return consultarEnderecoPorCep(enderecoDTO.getCep());
 	}
@@ -54,11 +79,11 @@ public class EnderecoController {
 			if (endereco != null) {
 				return new ResponseEntity(endereco, HttpStatus.OK);
 			} else {
-				return new ResponseEntity(new Endereco("CEP inválido"), HttpStatus.BAD_REQUEST);
+				return new ResponseEntity(new ErrorDTO("CEP inválido"), HttpStatus.BAD_REQUEST);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new ResponseEntity(new Endereco("Oppps, ocorreu um erro inesperado."), HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity(new ErrorDTO("Oppps, ocorreu um erro inesperado."), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 }

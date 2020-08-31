@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -16,24 +18,28 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import com.cleitons.silvar.consultaCepApi.model.dto.ErrorDTO;
 import com.cleitons.silvar.consultaCepApi.model.entity.Endereco;
 import com.cleitons.silvar.consultaCepApi.service.EnderecoService;
+import com.cleitons.silvar.consultaCepApi.service.impl.UsuarioServiceImpl;
 import com.cleitons.silvar.consultaCepApi.util.UtilTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles("test")
-@WebMvcTest(controllers = EnderecoController.class)
-@AutoConfigureMockMvc
+@WebMvcTest(controllers = EnderecoController.class, excludeAutoConfiguration = SecurityAutoConfiguration.class)
+@AutoConfigureMockMvc(addFilters = false)
 public class EnderecoControllerTest {
 	
 	static String ENDERECO_API = "/endereco";
 	
 	@Autowired
-	MockMvc mvc;
+	MockMvc mockMvc;
 	
 	@MockBean
 	EnderecoService enderecoService;
+	@MockBean
+	UsuarioServiceImpl usuarioServiceImpl;
 	
 	@Test
 	@DisplayName("Deve Consultar Um Endereco Via Uma Requisicao GET")
@@ -47,7 +53,7 @@ public class EnderecoControllerTest {
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON);;
 		
-		mvc.perform(request)
+		mockMvc.perform(request)
 				.andExpect( MockMvcResultMatchers.status().isOk() )
 				.andExpect( MockMvcResultMatchers.jsonPath("cep").value(enderecoGerado.getCep()) )
 				.andExpect( MockMvcResultMatchers.jsonPath("rua").value(enderecoGerado.getRua()) )
@@ -59,15 +65,15 @@ public class EnderecoControllerTest {
 	@Test
 	@DisplayName("Nao Deve Consultar Um Endereco Via Uma Requisicao GET")
 	public void nbterEnderecoViaGet() throws Exception {
-		Endereco endereco = new Endereco("CEP inválido");
+		ErrorDTO errorDto = new ErrorDTO("CEP inválido");
 		MockHttpServletRequestBuilder request = MockMvcRequestBuilders
 				.get(new StringBuilder(ENDERECO_API).append("/11111111").toString())
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON);
 		
-		mvc.perform(request)
+		mockMvc.perform(request)
 				.andExpect( MockMvcResultMatchers.status().isBadRequest() )
-				.andExpect( MockMvcResultMatchers.jsonPath("erro").value(endereco.getErro()) );
+				.andExpect( MockMvcResultMatchers.jsonPath("erro").value(errorDto.getErro()) );
 	}
 	
 	@Test
@@ -86,7 +92,7 @@ public class EnderecoControllerTest {
 				.accept(MediaType.APPLICATION_JSON)
 				.content(json);
 		
-		mvc.perform(request)
+		mockMvc.perform(request)
 				.andExpect( MockMvcResultMatchers.status().isOk() )
 				.andExpect( MockMvcResultMatchers.jsonPath("cep").value(enderecoGerado.getCep()) )
 				.andExpect( MockMvcResultMatchers.jsonPath("rua").value(enderecoGerado.getRua()) )
@@ -100,9 +106,9 @@ public class EnderecoControllerTest {
 	@DisplayName("Nao Deve Consultar Um Endereco Via Uma Requisicao POST")
 	public void naoObterEnderecoViaPost() throws Exception {
 		
-		Endereco endereco = new Endereco("CEP inválido");
+		ErrorDTO errorDto = new ErrorDTO("CEP inválido");
 		
-		String json = new ObjectMapper().writeValueAsString(new Endereco(1L, endereco.getCep()));
+		String json = new ObjectMapper().writeValueAsString(new Endereco(1L, "11111111"));
 		
 		MockHttpServletRequestBuilder request = MockMvcRequestBuilders
 				.post(ENDERECO_API)
@@ -110,9 +116,9 @@ public class EnderecoControllerTest {
 				.accept(MediaType.APPLICATION_JSON)
 				.content(json);
 		
-		mvc.perform(request)
+		mockMvc.perform(request)
 				.andExpect( MockMvcResultMatchers.status().isBadRequest() )
-				.andExpect( MockMvcResultMatchers.jsonPath("erro").value(endereco.getErro()) );
+				.andExpect( MockMvcResultMatchers.jsonPath("erro").value(errorDto.getErro()) );
 		
 	}
 }

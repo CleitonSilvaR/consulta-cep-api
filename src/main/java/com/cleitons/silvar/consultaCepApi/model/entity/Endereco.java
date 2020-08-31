@@ -7,12 +7,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import com.cleitons.silvar.consultaCepApi.util.SistemaConstantes;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,6 +27,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@ApiModel(value = "Endereço", description = "Endereço com valores da consulta de cep")
 public class Endereco {
 
 	@Id
@@ -51,13 +52,6 @@ public class Endereco {
 	@Column(name = "estado", length = SistemaConstantes.DOIS)
 	@Getter @Setter private String estado;
 	
-	@Transient
-	@Getter @Setter private String erro;
-
-	public Endereco(String erro) {
-		this.erro = erro;
-	}
-
 	public Endereco(Long id, String cep) {
 		this.id = id;
 		this.cep = cep;

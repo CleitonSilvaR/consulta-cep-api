@@ -13,6 +13,8 @@ import com.cleitons.silvar.consultaCepApi.util.SistemaConstantes;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,6 +29,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@ApiModel(value = "Usuario", description = "Objeto com valores de usuario para cadastro")
 public class Usuario {
 
 	@Id
@@ -36,10 +39,12 @@ public class Usuario {
 	@Column(unique = true, nullable = false)
 	@Getter private Long id;
 	
+	@ApiModelProperty(value = "login", required = true)
 	@NotEmpty( message = "Campo Login é obrigatório.")
 	@Column(name = "login", length = SistemaConstantes.CINQUENTA)
 	@Getter @Setter private String login;
 	
+	@ApiModelProperty(value = "login", required = true)
 	@NotEmpty( message = "Campo Senha é obrigatório.")
 	@Column(name = "senha", columnDefinition = "TEXT")
 	@Getter @Setter private String senha;

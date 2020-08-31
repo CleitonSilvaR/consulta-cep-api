@@ -15,6 +15,10 @@ import com.cleitons.silvar.consultaCepApi.model.dto.UsuarioDTO;
 import com.cleitons.silvar.consultaCepApi.model.entity.Usuario;
 import com.cleitons.silvar.consultaCepApi.service.impl.UsuarioServiceImpl;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -22,6 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/usuarios")
 @RequiredArgsConstructor
 @Slf4j
+@Api("Api Usuarios")
 public class UsuarioController {
 	
 	private final UsuarioServiceImpl usuarioService;
@@ -30,6 +35,10 @@ public class UsuarioController {
 	@PostMapping( produces = { MediaType.APPLICATION_JSON_VALUE }, 
 			consumes = { MediaType.APPLICATION_JSON_VALUE })
 	@ResponseStatus(HttpStatus.CREATED)
+	@ApiOperation("Cadastro de usuario com permissão para acessar api consulta cep")
+	@ApiResponses({
+		@ApiResponse(code = 201, response = UsuarioDTO.class, message = "Usuário cadastrado com sucesso!")
+	})
 	public UsuarioDTO salvar(@RequestBody @Valid Usuario usuario ) {
 		log.info("Salvando usuario login {} {}", usuario.getLogin(), usuario.getSenha());
 		String senhaCriptografada = passwordEncoder.encode(usuario.getSenha());

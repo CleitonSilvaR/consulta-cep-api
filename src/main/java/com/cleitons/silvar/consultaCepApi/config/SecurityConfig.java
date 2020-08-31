@@ -37,9 +37,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		.authorizeRequests()
 		.antMatchers("/endereco/**")
 			.hasAnyRole("USER")
+		.antMatchers("/actuator/**")
+			.hasAnyRole("USER")
 		.antMatchers(HttpMethod.POST, "/usuarios/**")
             .permitAll()
-        .anyRequest().authenticated()
 		.and()
 			.httpBasic();
 	}
