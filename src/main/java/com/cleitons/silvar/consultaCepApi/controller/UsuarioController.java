@@ -35,7 +35,7 @@ public class UsuarioController {
 	@PostMapping( produces = { MediaType.APPLICATION_JSON_VALUE }, 
 			consumes = { MediaType.APPLICATION_JSON_VALUE })
 	@ResponseStatus(HttpStatus.CREATED)
-	@ApiOperation("Cadastro de usuario com permissão para acessar api consulta cep")
+	@ApiOperation("Cadastro de usuario com permissão para acessar os demais endpoints disponíveis")
 	@ApiResponses({
 		@ApiResponse(code = 201, response = UsuarioDTO.class, message = "Usuário cadastrado com sucesso!")
 	})
